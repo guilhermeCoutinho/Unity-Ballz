@@ -24,6 +24,10 @@ public class WorldSpaceCanvas : Singleton<WorldSpaceCanvas> {
         text.text = s;
     }
 
+	public void UpdatePosition (RectTransform rect , Vector3 worldPosition) {
+		rect.anchoredPosition = getScreenPosition(worldPosition);
+	}
+
     public Vector2 getScreenPosition(Vector3 worldPosition)
     {
         Vector2 ViewportPosition = cam.WorldToViewportPoint(worldPosition);

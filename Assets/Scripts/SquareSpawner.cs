@@ -3,45 +3,59 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class SquareSpawner : MonoBehaviour {
-    const float SQUARE_SIZE = 1f;
-	const float WALL_WIDTH = 1F;
+	const int columns = 7;
+	List<Square> squareList  = new List<Square>();
+	ObjectPool squarePool ;
 
-	public Vector2Int gridSize;
-	public GameObject leftWall;
-	public GameObject rightWall;
-	public GameObject topWall ;
-	public GameObject bottomWall;
-
-	void Start () {
-		CreateGrid () ;
+	void Awake () {
+		squarePool = GetComponent<ObjectPool> ();
 	}
 
-	public void CreateGrid () {
-		setupWall (new Vector2(WALL_WIDTH,gridSize.y),topWall);
-        setupWall(new Vector2(WALL_WIDTH, gridSize.y), bottomWall);
-        setupWall(new Vector2(WALL_WIDTH, gridSize.x), leftWall);
-        setupWall(new Vector2(WALL_WIDTH, gridSize.x), rightWall);
-
-        float totalWidth = gridSize.y * SQUARE_SIZE  +  WALL_WIDTH;
-        float totalHeight =gridSize.x * SQUARE_SIZE  +  WALL_WIDTH;
-		float offset = SQUARE_SIZE / 2f + WALL_WIDTH / 2f;
-		
-		topWall.transform.position = new Vector2 ( totalWidth/2f-WALL_WIDTH, offset);
-		bottomWall.transform.position = new Vector2 (totalWidth/2f-WALL_WIDTH,offset - totalHeight);
-		leftWall.transform.position = new Vector2 (-offset,-totalHeight/2f+WALL_WIDTH);
-		rightWall.transform.position = new Vector2(-offset + totalWidth, -totalHeight / 2f+WALL_WIDTH);
+	Square SpawnSquare (int i , int j,int life) {
+        Square sq = squarePool.getObject().GetComponent<Square>();
+        sq.transform.position = new Vector3 (i,j,0);
+        squareList.Add(sq);
+		sq.life = life;
+		return sq;
 	}
 
-	void setupWall (Vector2 dims , GameObject wall ) {
-		wall.GetComponent<SpriteRenderer>().size = new Vector2(dims.x, dims.y);
-		wall.GetComponent<BoxCollider2D>().size = new Vector2(dims.x, dims.y);
+	public void Spawn (int playerMovesSoFar) {
+		int [] spawnPositions = new int [columns];
+		for (int i = 0; i < columns; i++)
+            spawnPositions[i] = 0;
+		int sqrt = Mathf.FloorToInt(Mathf.Sqrt(playerMovesSoFar));
+		for (int i = 0;i<playerMovesSoFar;i++) {
+			int randomX = Random.Range(0,columns);
+			spawnPositions[randomX] += sqrt;
+		}
+		for (int i = 0; i < columns; i++)
+        {
+			if (spawnPositions[i] != 0) {
+				SpawnSquare (i,0,spawnPositions[i]);
+			}
+        }
 	}
 
-	void SpawnSquare (int i , int j) {
+	int moves = 0;
+	void OnLastBallArrived () {
+		foreach (Square sq in squareList)
+		{
+			if (sq.gameObject.activeInHierarchy)
+				sq.MoveToPosition (sq.transform.position + Vector3.down);
+		}
+		Spawn (moves++);
 	}
 
-	public void Spawn () {
-		
-	}
+    void OnEnable()
+    {
+        EventBinder.StartListening(EventBinder.ON_LAST_BALL_ARRIVED
+        , OnLastBallArrived);
+    }
+
+    void OnDisable()
+    {
+        EventBinder.StopListening(EventBinder.ON_LAST_BALL_ARRIVED
+        , OnLastBallArrived);
+    }
 
 }

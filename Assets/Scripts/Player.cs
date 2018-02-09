@@ -23,5 +23,17 @@ public class Player : Singleton<Player> {
 		}
 	}
 
-	
+	void OnEnable () {
+        EventBinder.StartListening (EventBinder.ON_LAST_BALL_ARRIVED
+        , OnLastBallArrived);
+    }
+
+    void OnDisable () {
+        EventBinder.StopListening(EventBinder.ON_LAST_BALL_ARRIVED
+        , OnLastBallArrived);
+    }
+
+    void OnLastBallArrived () {
+        
+    }
 }

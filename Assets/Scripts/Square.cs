@@ -10,20 +10,26 @@ public class Square : MonoBehaviour {
 
 	public CustomGradient customGradient;
 	Text cachedText;
+	RectTransform cachedTextRectTransform ;
 	SpriteRenderer spriteRenderer;
+    Vector3 previousPosition = Vector3.zero;
+	MoveToPosition _moveTo;
+	MoveToPosition MoveTo {
+		get {
+			if (_moveTo == null)
+				_moveTo = GetComponent<MoveToPosition>();
+			return _moveTo;
+		}
+	}
 	 
 	void Awake () {
 		spriteRenderer = GetComponent<SpriteRenderer> () ;
 	}
 
-	void Start () {
+	void OnEnable () {
 		cachedText = WorldSpaceCanvas.Instance.CreateText("" + life , transform.position);
-		updateLife ();
-	}
-
-	void updateLife () {
-        WorldSpaceCanvas.Instance.DisplayText("" + life, transform.position, cachedText);
-		spriteRenderer.color = customGradient.Evaluate (life/maxLife);
+		previousPosition = transform.position;
+		cachedTextRectTransform = cachedText.GetComponent<RectTransform> ();
 	}
 
     void OnCollisionEnter2D(Collision2D coll)
@@ -31,10 +37,21 @@ public class Square : MonoBehaviour {
         life--;
 		if (life <= 0){
 			WorldSpaceCanvas.Instance.destroyText(cachedText);
-			Destroy(gameObject);
-		}
-		else{
-			updateLife () ;
+			MoveTo.Stop ();
+			GetComponentInParent<ObjectPool>().returnObject(gameObject);
 		}
     }
+
+	public void MoveToPosition (Vector3 targetPos) {
+		MoveTo.Move (targetPos);
+	}
+
+
+	void Update () {
+		WorldSpaceCanvas.Instance.UpdatePosition (cachedTextRectTransform
+			,transform.position);
+			previousPosition = transform.position;
+		cachedText.text = life.ToString();
+		spriteRenderer.color = customGradient.Evaluate(life/maxLife);
+	}
 }
