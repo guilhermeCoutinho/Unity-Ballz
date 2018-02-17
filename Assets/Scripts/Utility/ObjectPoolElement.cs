@@ -20,6 +20,7 @@ public class ObjectPoolElement : MonoBehaviour {
             RectTransform copyTransform = copyThis.GetComponent<RectTransform>();
             rectT.anchoredPosition = copyTransform.anchoredPosition;
             rectT.localRotation = copyTransform.localRotation;
+            rectT.localScale = copyTransform.localScale;
         }else
         {
             transform.position = copyThis.transform.position;

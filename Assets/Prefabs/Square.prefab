@@ -21,17 +21,17 @@ GameObject:
   - component: {fileID: 4199028974142228}
   - component: {fileID: 212907229811395984}
   - component: {fileID: 50661178266164380}
-  - component: {fileID: 61167576959751138}
   - component: {fileID: 114203792684662354}
   - component: {fileID: 114033853836450916}
   - component: {fileID: 114743976863194404}
+  - component: {fileID: 61191003816522916}
   m_Layer: 0
   m_Name: Square
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!1 &1763096238789860
 GameObject:
   m_ObjectHideFlags: 0
@@ -95,7 +95,7 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 1
   m_Constraints: 0
---- !u!61 &61167576959751138
+--- !u!61 &61191003816522916
 BoxCollider2D:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -118,8 +118,8 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1, y: 1}
-  m_EdgeRadius: 0
+  m_Size: {x: 0.75, y: 0.75}
+  m_EdgeRadius: 0.1
 --- !u!114 &114033853836450916
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -143,22 +143,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2b8c1087a28083645a09ba09a2ea6c77, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  life: 50
-  maxLife: 200
-  customGradient:
-    blendMode: 0
-    randomizeColour: 0
-    keys:
-    - colour: {r: 0.48670572, g: 1, b: 0.46712804, a: 1}
-      time: 0
-    - colour: {r: 0.9098039, g: 0.8862745, b: 0.53333336, a: 1}
-      time: 0.22105263
-    - colour: {r: 0.9725491, g: 0.50980395, b: 0.058823533, a: 1}
-      time: 0.4763158
-    - colour: {r: 0.8161765, g: 0.22204803, b: 0.22204803, a: 1}
-      time: 0.77105266
-    - colour: {r: 0.41911763, g: 0.064716704, b: 0.064716704, a: 1}
-      time: 1
+  life: 1
+  maxLife: 50
 --- !u!114 &114743976863194404
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -170,7 +156,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 32bc6a656df785d4b86c74cfad947688, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 30
+  speed: 10
 --- !u!212 &212907229811395984
 SpriteRenderer:
   m_ObjectHideFlags: 1
@@ -204,7 +190,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: -1
   m_Sprite: {fileID: 21300000, guid: 384c3abe72613cf4db4f95f1e0ad8970, type: 3}
   m_Color: {r: 0.83854336, g: 0.8897059, b: 0.35980755, a: 1}
   m_FlipX: 0
@@ -248,7 +234,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: -1
+  m_SortingOrder: -2
   m_Sprite: {fileID: 21300000, guid: 384c3abe72613cf4db4f95f1e0ad8970, type: 3}
   m_Color: {r: 0.19852942, g: 0.19852942, b: 0.19852942, a: 0.397}
   m_FlipX: 0

@@ -7,6 +7,8 @@ public class EventBinder : MonoBehaviour
 {
 
     public const string ON_LAST_BALL_ARRIVED = "lba";
+    public const string ON_FIRST_BALL_ARRIVED = "fba";
+    public const string ON_GAME_STARTED  = "ogs";
 
     private static EventBinder eventManager;
 

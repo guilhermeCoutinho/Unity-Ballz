@@ -36,7 +36,6 @@ public class ObjectPool : MonoBehaviour {
 		if (freeElementIndexes.Count == 0) {
 			GameObject duplicateThis = pool [firstIndex].gameObject;
 			doubleCapacity (duplicateThis);
-			Debug.Log ("CAlled double capacity");
 		}
 		pool [firstIndex].activate ();
 		return pool [firstIndex].gameObject;
@@ -59,7 +58,6 @@ public class ObjectPool : MonoBehaviour {
 			pool.Add (clonePoolElement);
 			freeElementIndexes.Add (pool.IndexOf (clonePoolElement));
 		}
-		Debug.Log (freeElementIndexes.Count);
 	}
 
 }

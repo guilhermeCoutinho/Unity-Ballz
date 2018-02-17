@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class MoveToPosition : MonoBehaviour {
 
@@ -21,6 +22,7 @@ public class MoveToPosition : MonoBehaviour {
 		if (!shouldMove)
 			return;
 		if (Vector3.Distance (transform.position,targetPosition) < .01f){
+			transform.position = targetPosition;
 			shouldMove = false;
 		}else 
 		{

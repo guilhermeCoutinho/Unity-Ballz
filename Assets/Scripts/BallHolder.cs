@@ -10,8 +10,8 @@ public class BallHolder : Singleton<BallHolder>  {
 	List<Ball> ballList = new List<Ball> ();
 	List<Ball> ballsInPlay = new List<Ball> () ;
 
-	bool waitingForFirstBallToArrive = true;
-	bool waitingForLastBallToArrive = true;
+	bool waitingForFirstBallToArrive = false;
+	bool waitingForLastBallToArrive = false;
 	int ballsRemaining ;
 	Vector3 waitingPosition ;
 
@@ -30,6 +30,7 @@ public class BallHolder : Singleton<BallHolder>  {
 	}
 
 	public void AddBall () {
+		ballsRemaining ++ ;
 		GameObject GO = Instantiate 
 			( ballPrefab,waitingPosition,Quaternion.identity,transform);
 		ballList.Add (GO.GetComponent<Ball> () );
@@ -49,10 +50,12 @@ public class BallHolder : Singleton<BallHolder>  {
 
 	IEnumerator fireBallCoroutine (Vector2 direction) {
 		ballsInPlay.Clear () ;
+		Vector3 originalFiringPosition = waitingPosition;
 		ballsRemaining = ballList.Count;
 		for (int i = 0; i < ballList.Count; i++ )
 		{
 			ballsInPlay.Add (ballList[i]);
+			ballList[i].Stop (originalFiringPosition);
 			ballList[i].Fire (direction);
 			yield return new WaitForSeconds(fireRate);
 			ballsRemaining --;
@@ -67,12 +70,15 @@ public class BallHolder : Singleton<BallHolder>  {
             float xPosition = b.transform.position.x;
 			waitingPosition = 
 				new Vector3 (xPosition,transform.position.y,transform.position.z);
+            EventBinder.TriggerEvent(EventBinder.ON_FIRST_BALL_ARRIVED);
 		}
 		if (waitingForLastBallToArrive && getNumberOfBallsInPlay() == 0){
 			waitingForLastBallToArrive = false;
             ballsRemaining = ballList.Count;
 			EventBinder.TriggerEvent(EventBinder.ON_LAST_BALL_ARRIVED);
 		}
-		b.transform.position = waitingPosition;
+		b.transform.position = new Vector3 (b.transform.position.x,
+			waitingPosition.y,b.transform.position.z);
+		b.MoveTo ( waitingPosition );
 	}
 }

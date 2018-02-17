@@ -8,7 +8,16 @@ public class Square : MonoBehaviour {
 	public float life = 5f;
 	public float maxLife = 200;
 
-	public CustomGradient customGradient;
+	private SquareSpawner squareSpawner;
+
+	CustomGradient _customGradient ;
+	CustomGradient customGradient {
+		get {
+			if (_customGradient == null)
+				_customGradient = GetComponentInParent<SquareSpawner>().colorGradient;
+			return _customGradient;
+		}
+	}
 	Text cachedText;
 	RectTransform cachedTextRectTransform ;
 	SpriteRenderer spriteRenderer;
@@ -36,9 +45,11 @@ public class Square : MonoBehaviour {
     {
         life--;
 		if (life <= 0){
-			WorldSpaceCanvas.Instance.destroyText(cachedText);
+			if (cachedText != null)
+				WorldSpaceCanvas.Instance.destroyText(cachedText);
+			cachedText = null;
 			MoveTo.Stop ();
-			GetComponentInParent<ObjectPool>().returnObject(gameObject);
+            GetComponentInParent<SquareSpawner>().SquareDied(this);
 		}
     }
 

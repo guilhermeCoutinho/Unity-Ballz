@@ -4,9 +4,19 @@ using UnityEngine;
 
 public class Player : Singleton<Player> {
 
-	public BallHolder ballHolder; 
+	public BallHolder ballHolder;
+    public int numberOfPlayerMoves = 1;
+    public Animator ballupText;
+
+    public void StartGame () {
+            BallHolder.Instance.AddBall ();
+            EventBinder.TriggerEvent (EventBinder.ON_GAME_STARTED);
+    }
 
 	void Update () {
+        if (Input.GetKeyDown(KeyCode.Space)) {
+            StartGame ();
+        }
 		if (ballHolder.getNumberOfBallsInPlay() == 0) {
             if (Input.GetMouseButtonDown(0))
             {
@@ -14,12 +24,9 @@ public class Player : Singleton<Player> {
                 Camera.main.ScreenToWorldPoint(Input.mousePosition)
                  - ballHolder.GetPosition();
                 ballHolder.OnNewPlayerMove();
+                numberOfPlayerMoves++;
                 BallHolder.Instance.FireBalls(direction);
             }
-		}
-		
-		if (Input.GetMouseButtonDown(1)) {
-			BallHolder.Instance.AddBall ();
 		}
 	}
 
@@ -34,6 +41,7 @@ public class Player : Singleton<Player> {
     }
 
     void OnLastBallArrived () {
-        
+        ballupText.SetTrigger("ball_up");
+        BallHolder.Instance.AddBall ();
     }
 }

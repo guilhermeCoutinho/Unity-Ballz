@@ -7,7 +7,7 @@ public class BallCounter : MonoBehaviour {
 	public Text text;
 	
 	int ballsInPlay;
-	Vector3 startPosition ;
+	float startXPosition ;
 	Vector3 endPosition ;
 	Vector3 offset ;
 
@@ -22,12 +22,17 @@ public class BallCounter : MonoBehaviour {
 
 	void Start () {
 		offset = transform.position - BallHolder.Instance.GetPosition();
+		startXPosition = BallHolder.Instance.GetPosition().x;
 		onLastBallArrived ();
 	}
 
     void onLastBallArrived()
     {
-		endPosition = BallHolder.Instance.GetPosition () + offset;
+		if (BallHolder.Instance.GetPosition().x < startXPosition)
+			endPosition = BallHolder.Instance.GetPosition () 
+			+ new Vector3( -offset.x, offset.y,offset.z );
+		else
+            endPosition = BallHolder.Instance.GetPosition() + offset;
 		WorldSpaceCanvas.Instance.DisplayText (
 			"x" + BallHolder.Instance.getNumberOfBallRemaining().ToString(),
 			endPosition,text);
