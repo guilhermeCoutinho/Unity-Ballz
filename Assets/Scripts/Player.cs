@@ -12,9 +12,10 @@ public class Player : Singleton<Player> {
     Vector3 mouseCorrectedPosition ;
 
     public void StartGame () {
-            BallHolder.Instance.AddBall ();
-            EventBinder.TriggerEvent (EventBinder.ON_GAME_STARTED);
-            trajectoryPreviewer.Show () ;
+        Game.gameState = Game.State.RUNNING;
+        BallHolder.Instance.AddBall ();
+        EventBinder.TriggerEvent (EventBinder.ON_GAME_STARTED);
+        trajectoryPreviewer.Show () ;
     }
 
     public Vector3 GetMouseCorrectedPosition () {
@@ -31,25 +32,31 @@ public class Player : Singleton<Player> {
 
 	void Update () {
 
-        if (Input.GetKeyDown(KeyCode.Space)) {
-            StartGame ();
+        if ( Game.gameState == Game.State.STOPPED) {
+            if (Input.GetKeyDown(KeyCode.Space))
+                StartGame ();
         }
+        if (Game.gameState == Game.State.RUNNING){
+            gameRunning ();
+        }
+	}
 
-        calculateCorrectedMousePosition  ();
-
-		if (ballHolder.getNumberOfBallsInPlay() == 0) {
+    void gameRunning () {
+        calculateCorrectedMousePosition();
+        if (ballHolder.getNumberOfBallsInPlay() == 0)
+        {
             if (Input.GetMouseButtonDown(0))
             {
-                trajectoryPreviewer.Hide ();
+                trajectoryPreviewer.Hide();
                 Vector2 direction =
                 mouseCorrectedPosition
-                 - ballHolder.GetPosition();
+                - ballHolder.GetPosition();
                 ballHolder.OnNewPlayerMove();
                 numberOfPlayerMoves++;
                 BallHolder.Instance.FireBalls(direction);
             }
-		}
-	}
+        }
+    }
 
 	void OnEnable () {
         EventBinder.StartListening (EventBinder.ON_LAST_BALL_ARRIVED
