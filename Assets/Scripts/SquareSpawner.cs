@@ -19,6 +19,10 @@ public class SquareSpawner : MonoBehaviour {
 
 	Square SpawnSquare (int i , int j,int life) {
         Square sq = squarePool.getObject().GetComponent<Square>();
+		Debug.Log (sq.life);
+		if (sq.life != 0)
+			Debug.Log ("WTF " + sq.name);
+
         sq.transform.position = new Vector3 (i,j,0);
         squareList.Add(sq);
 		sq.life = life;

@@ -29,7 +29,6 @@ public class ObjectPool : MonoBehaviour {
 	}
 
 	public GameObject getObject () {
-		Debug.Log (freeElementIndexes.Count);
 		int firstIndex = freeElementIndexes [0];
 		freeElementIndexes.RemoveAt (0);
 

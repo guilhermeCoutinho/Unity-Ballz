@@ -30,8 +30,10 @@ public class Square : MonoBehaviour {
 			return _moveTo;
 		}
 	}
-	 
+	
+	static int debugId = 0;
 	void Awake () {
+		gameObject.name = "Square " + debugId++;
 		spriteRenderer = GetComponent<SpriteRenderer> () ;
 	}
 
@@ -45,11 +47,12 @@ public class Square : MonoBehaviour {
     {
         life--;
 		if (life <= 0){
-			if (cachedText != null)
+			if (cachedText != null){
+                GetComponentInParent<SquareSpawner>().SquareDied(this);
 				WorldSpaceCanvas.Instance.destroyText(cachedText);
+			}
 			cachedText = null;
 			MoveTo.Stop ();
-            GetComponentInParent<SquareSpawner>().SquareDied(this);
 		}
     }
 

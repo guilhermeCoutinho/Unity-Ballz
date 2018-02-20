@@ -3,25 +3,46 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Player : Singleton<Player> {
-
+    [Range(0,1)]
+    public float minimumYDistance = 0.1f;
+    public TrajectoryPreviewer trajectoryPreviewer;
 	public BallHolder ballHolder;
     public int numberOfPlayerMoves = 1;
     public Animator ballupText;
+    Vector3 mouseCorrectedPosition ;
 
     public void StartGame () {
             BallHolder.Instance.AddBall ();
             EventBinder.TriggerEvent (EventBinder.ON_GAME_STARTED);
+            trajectoryPreviewer.Show () ;
+    }
+
+    public Vector3 GetMouseCorrectedPosition () {
+        return mouseCorrectedPosition;
+    }
+
+    void calculateCorrectedMousePosition () {
+        mouseCorrectedPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        if (mouseCorrectedPosition.y - ballHolder.GetPosition().y < minimumYDistance)
+        {
+            mouseCorrectedPosition.y = ballHolder.GetPosition().y + minimumYDistance;
+        }
     }
 
 	void Update () {
+
         if (Input.GetKeyDown(KeyCode.Space)) {
             StartGame ();
         }
+
+        calculateCorrectedMousePosition  ();
+
 		if (ballHolder.getNumberOfBallsInPlay() == 0) {
             if (Input.GetMouseButtonDown(0))
             {
+                trajectoryPreviewer.Hide ();
                 Vector2 direction =
-                Camera.main.ScreenToWorldPoint(Input.mousePosition)
+                mouseCorrectedPosition
                  - ballHolder.GetPosition();
                 ballHolder.OnNewPlayerMove();
                 numberOfPlayerMoves++;
@@ -42,6 +63,7 @@ public class Player : Singleton<Player> {
 
     void OnLastBallArrived () {
         ballupText.SetTrigger("ball_up");
+        trajectoryPreviewer.Show ();
         BallHolder.Instance.AddBall ();
     }
 }
