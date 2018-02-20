@@ -11,6 +11,11 @@ public class Player : Singleton<Player> {
     public Animator ballupText;
     Vector3 mouseCorrectedPosition ;
 
+    IEnumerator Start () {
+        yield return null;
+        StartGame ();
+    }
+
     public void StartGame () {
         Game.gameState = Game.State.RUNNING;
         BallHolder.Instance.AddBall ();
