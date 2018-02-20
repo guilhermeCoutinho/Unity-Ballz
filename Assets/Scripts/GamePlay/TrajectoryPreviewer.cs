@@ -13,8 +13,20 @@ public class TrajectoryPreviewer : MonoBehaviour {
     Vector3[] points = new Vector3[2];
 
 	void Update () {
+		if (show && !line.gameObject.activeInHierarchy){
+			toggle(true);
+		}else if (!show && line.gameObject.activeInHierarchy){
+			toggle(false);
+		}
+
 		if (show) {
-			points[0] = Player.Instance.GetMouseCorrectedPosition();
+			Vector2 direction = Player.Instance.GetMouseCorrectedPosition ()
+			- BallHolder.Instance.GetPosition();
+			Debug.Log (direction);
+			direction *= 10;
+			Debug.Log (direction);
+			points[0] = BallHolder.Instance.GetPosition() +
+				new Vector3 (direction.x,direction.y,BallHolder.Instance.GetPosition().z);
 			points[1] = BallHolder.Instance.GetPosition();
 			line.SetPositions (points);
 			line.material.SetTextureOffset ("_MainTex",offset);
@@ -29,15 +41,14 @@ public class TrajectoryPreviewer : MonoBehaviour {
 
 	public void Show () {
 		offset = Vector2.zero;
-		toggle(true);
+		show = true;
 	}
 
 	public void Hide () {
-		toggle (false);
+		show = false;
 	}
 
 	void toggle (bool active) {
-		show = active;
     	line.gameObject.SetActive( active );
         arrow.gameObject.SetActive ( active );
 	}

@@ -4,6 +4,10 @@ using UnityEngine;
 using UnityEngine.Events;
 
 public class Ball : MonoBehaviour {
+	
+	public bool useRandomColor;
+	public bool useRandomSize;
+
 	Vector3 direction;
 	Rigidbody2D rb;
 	public float force;
@@ -14,6 +18,16 @@ public class Ball : MonoBehaviour {
 		mover = GetComponent<MoveToPosition>() ;
 		rb = GetComponent<Rigidbody2D>();
 		pool = GetComponentInParent<ObjectPool>();
+	}
+
+	void Start () {
+		if (useRandomColor) {
+			GetComponent<SpriteRenderer>().color =
+				Random.ColorHSV(0f, 1f, 1f, 1f, 0.5f, 1f);
+		}
+		if (useRandomSize) {
+			transform.localScale *= Random.Range(1f,1.2f);
+		}
 	}
 
 	public void Fire (Vector2 direction ){

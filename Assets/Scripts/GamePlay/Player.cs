@@ -19,8 +19,8 @@ public class Player : Singleton<Player> {
     public void StartGame () {
         Game.gameState = Game.State.RUNNING;
         BallHolder.Instance.AddBall ();
+        trajectoryPreviewer.Show ();
         EventBinder.TriggerEvent (EventBinder.ON_GAME_STARTED);
-        trajectoryPreviewer.Show () ;
     }
 
     public Vector3 GetMouseCorrectedPosition () {
@@ -50,7 +50,10 @@ public class Player : Singleton<Player> {
         calculateCorrectedMousePosition();
         if (ballHolder.getNumberOfBallsInPlay() == 0)
         {
-            if (Input.GetMouseButtonDown(0))
+            if (Input.GetMouseButtonDown (0) ) {
+                trajectoryPreviewer.Show ();
+            }
+            if (Input.GetMouseButtonUp(0))
             {
                 trajectoryPreviewer.Hide();
                 Vector2 direction =
@@ -75,7 +78,6 @@ public class Player : Singleton<Player> {
 
     void OnLastBallArrived () {
         ballupText.SetTrigger("ball_up");
-        trajectoryPreviewer.Show ();
         BallHolder.Instance.AddBall ();
     }
 }

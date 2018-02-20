@@ -52,7 +52,7 @@ public class SquareSpawner : MonoBehaviour {
 		for (int i = 0; i < columns; i++)
         {
 			if (spawnPositions[i] != 0) {
-				SpawnSquare (i,1,spawnPositions[i]);
+				SpawnSquare (i,0,spawnPositions[i]);
 			}
         }
 	}

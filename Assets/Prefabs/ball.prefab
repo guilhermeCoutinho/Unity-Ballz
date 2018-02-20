@@ -184,6 +184,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3258a4f91c9ecb4aa67dc7c3b7bf859, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  useRandomColor: 1
+  useRandomSize: 0
   force: 50
 --- !u!114 &114932895171706444
 MonoBehaviour:
@@ -196,7 +198,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 32bc6a656df785d4b86c74cfad947688, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 10
+  speed: 8
 --- !u!212 &212852646878982996
 SpriteRenderer:
   m_ObjectHideFlags: 1
